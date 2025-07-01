@@ -21,7 +21,7 @@ const Contact = () => {
           >
             111yadavkaran@gmail.com
           </Link>
-          , and I'll respond whenever I can. I will ignore all soliciting.
+          , and I&#39;ll respond whenever I can. I will ignore all soliciting.
         </p>
       </div>
     </div>
