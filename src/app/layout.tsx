@@ -5,8 +5,8 @@ import DarkModeProvider from "@/context/DarkModeContext";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
-import ConditionalFooter from "./ConditionalFooter";
 import { Pointer } from "@/components/ui/pointer";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Karan Yadav | Portfolio",
@@ -70,7 +70,7 @@ export default function RootLayout({
             <Pointer />
             {children}
             <Analytics />
-            <ConditionalFooter />
+            <Footer />
           </Theme>
         </DarkModeProvider>
       </body>

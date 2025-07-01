@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className="max-[350px]:overflow-hidden mt-8 max-sm:mt-0 !cursor-none">
       <Navbar />
-      <div className="">
+      <div>
         <InitialLanding />
       </div>
 

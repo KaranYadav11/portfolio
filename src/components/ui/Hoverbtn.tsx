@@ -1,16 +1,14 @@
 // InteractiveHoverButton.tsx
+"use client";
+
 import React from "react";
-import { ArrowDown, ArrowRight } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// Define the prop types for the button component
-interface InteractiveHoverButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
-
-// ForwardRef component with proper generics for HTMLButtonElement and props
+// ForwardRef component with direct generic typing (no custom interface needed)
 export const InteractiveHoverButton = React.forwardRef<
   HTMLButtonElement,
-  InteractiveHoverButtonProps
+  React.ButtonHTMLAttributes<HTMLButtonElement>
 >(({ children, className, ...props }, ref) => {
   return (
     <button
@@ -27,6 +25,7 @@ export const InteractiveHoverButton = React.forwardRef<
           {children}
         </span>
       </div>
+
       <div className="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 text-primary-foreground opacity-0 transition-all duration-300 group-hover:-translate-x-5 group-hover:opacity-100">
         <span>{children}</span>
         <ArrowDown />
@@ -35,4 +34,5 @@ export const InteractiveHoverButton = React.forwardRef<
   );
 });
 
+// Set display name for devtools and debugging
 InteractiveHoverButton.displayName = "InteractiveHoverButton";
