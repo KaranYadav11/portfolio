@@ -31,35 +31,31 @@ export default function Header() {
   const [mounted, setMounted] = useState(false);
   const { isDarkMode, toggleDarkMode } = useDarkMode();
 
-  // Prevent hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => setMounted(true), []);
 
-  // Don't render until mounted to avoid hydration mismatch
-  if (!mounted) {
-    return null;
-  }
+  if (!mounted) return null;
 
   const handleClick = (item: (typeof items)[0]) => {
     if (item.action === "toggle") {
       toggleDarkMode();
-      setActiveItem(item.id);
-      // Reset active state after animation
-      setTimeout(() => setActiveItem(""), 600);
     } else if (item.external && item.href) {
       window.open(item.href, "_blank", "noopener,noreferrer");
-      setActiveItem(item.id);
-      // Reset active state after animation
-      setTimeout(() => setActiveItem(""), 600);
     }
+
+    setActiveItem(item.id);
+    setTimeout(() => setActiveItem(""), 600);
   };
 
   return (
-    <div className="flex cursor-none justify-center items-center fixed top-4 w-full z-40 px-4">
-      <nav
-        className={` cursor-none
-          select-none flex items-center gap-1 p-1 rounded-2xl transition-all duration-300 
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="flex cursor-none justify-center items-center fixed top-4 w-full z-40 px-4"
+    >
+      <motion.nav
+        layout
+        className={`select-none flex items-center gap-1 p-1 rounded-2xl transition-all duration-300 
           max-sm:rounded-xl max-sm:p-0.5 max-sm:gap-0.5
           ${
             isDarkMode
@@ -69,13 +65,13 @@ export default function Header() {
         `}
       >
         {items.map((item) => (
-          <button
+          <motion.button
             key={item.id}
             onClick={() => handleClick(item)}
-            className={`cursor-none
-              relative px-5 py-2.5 text-sm font-medium transition-all duration-300 
-              flex items-center gap-2.5 rounded-xl group
-              max-sm:px-3 max-sm:py-2 max-sm:text-xs max-sm:gap-1.5 max-sm:rounded-lg
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`relative cursor-none px-5 py-2.5 text-sm font-medium flex items-center gap-2.5 rounded-xl group 
+              transition-all duration-300 max-sm:px-3 max-sm:py-2 max-sm:text-xs max-sm:gap-1.5 max-sm:rounded-lg
               ${
                 activeItem === item.id
                   ? isDarkMode
@@ -98,48 +94,42 @@ export default function Header() {
             {activeItem === item.id && (
               <motion.span
                 layoutId="bubble"
-                className={`
-                  absolute inset-0 z-0 rounded-xl max-sm:rounded-lg
-                  ${isDarkMode ? "bg-white" : "bg-black"}
-                `}
+                className={`absolute inset-0 z-0 rounded-xl max-sm:rounded-lg ${
+                  isDarkMode ? "bg-white" : "bg-black"
+                }`}
                 transition={{
                   type: "spring",
-                  bounce: 0.15,
-                  duration: 0.6,
-                  ease: "easeInOut",
+                  bounce: 0.2,
+                  duration: 0.5,
                 }}
               />
             )}
-            <span className="relative z-10 flex items-center gap-2.5 max-sm:gap-1.5">
+            <span className="relative z-10 cursor-none flex items-center gap-2.5 max-sm:gap-1.5">
               {item.id === "github" && (
-                <GitHubLogoIcon
-                  className={`
-                    w-4 h-4 max-sm:w-3.5 max-sm:h-3.5 transition-transform duration-200 
-                    ${activeItem !== item.id ? "group-hover:scale-110" : ""}
-                  `}
-                />
+                <GitHubLogoIcon className="w-4 cursor-none h-4 max-sm:w-3.5 max-sm:h-3.5 transition-transform duration-200 group-hover:scale-110" />
               )}
               {item.id === "linkedin" && (
-                <LinkedInLogoIcon
-                  className={`
-                    w-4 h-4 max-sm:w-3.5 max-sm:h-3.5 transition-transform duration-200 
-                    ${activeItem !== item.id ? "group-hover:scale-110" : ""}
-                  `}
-                />
+                <LinkedInLogoIcon className="w-4 cursor-none h-4 max-sm:w-3.5 max-sm:h-3.5 transition-transform duration-200 group-hover:scale-110" />
               )}
               {item.id === "darkmode" && (
-                <div className="transition-transform duration-200 group-hover:rotate-12">
+                <motion.div
+                  key={isDarkMode ? "moon" : "sun"}
+                  initial={{ rotate: -45, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="transition-transform cursor-none duration-200 group-hover:rotate-12"
+                >
                   {isDarkMode ? (
                     <MoonIcon className="w-4 h-4 max-sm:w-3.5 max-sm:h-3.5" />
                   ) : (
                     <SunIcon className="w-4 h-4 max-sm:w-3.5 max-sm:h-3.5" />
                   )}
-                </div>
+                </motion.div>
               )}
             </span>
-          </button>
+          </motion.button>
         ))}
-      </nav>
-    </div>
+      </motion.nav>
+    </motion.div>
   );
 }

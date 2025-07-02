@@ -1,15 +1,24 @@
 "use client";
-import React from "react";
+
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { bricolage_grotesque, montserrat } from "@/utils/fonts";
+import { useDarkMode } from "@/hooks/useDarkMode";
 
 const Footer = () => {
+  const { isDarkMode } = useDarkMode();
+  const [mounted, setMounted] = useState(false);
+  console.log("Footer rendered with isDarkMode:", isDarkMode);
+
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
+
   // Animation variants
   const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
       transition: {
         duration: 0.6,
         ease: "easeOut",
@@ -23,10 +32,7 @@ const Footer = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
+      transition: { duration: 0.5, ease: "easeOut" },
     },
   };
 
@@ -46,10 +52,7 @@ const Footer = () => {
     initial: { scale: 1 },
     hover: {
       scale: 1.05,
-      transition: {
-        duration: 0.2,
-        ease: "easeInOut",
-      },
+      transition: { duration: 0.2, ease: "easeInOut" },
     },
   };
 
@@ -58,11 +61,7 @@ const Footer = () => {
     animate: {
       scale: [1, 1.2, 1],
       opacity: [0.8, 1, 0.8],
-      transition: {
-        duration: 2,
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
+      transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
     },
   };
 
@@ -71,23 +70,19 @@ const Footer = () => {
     animate: {
       rotate: [0, 180, 360],
       scale: [1, 1.1, 1],
-      transition: {
-        duration: 3,
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
+      transition: { duration: 3, repeat: Infinity, ease: "easeInOut" },
     },
   };
 
+  const backgroundColor = isDarkMode ? "bg-black/95" : "bg-white";
+  const textColor = isDarkMode ? "text-white" : "text-black";
+  const borderColor = isDarkMode ? "border-gray-800/50" : "border-gray-300";
+
   return (
-    <motion.footer
-      className="relative bg-black/95 backdrop-blur-sm text-white border-t border-gray-800/50 overflow-hidden"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-50px" }}
-      variants={containerVariants}
+    <footer
+      className={`relative ${backgroundColor} ${textColor} ${borderColor} backdrop-blur-sm border-t overflow-hidden`}
     >
-      {/* Animated gradient overlay */}
+      {/* Glow Layers */}
       <motion.div
         className="absolute inset-0 bg-gradient-to-b from-purple-900/5 to-transparent"
         initial={{ opacity: 0 }}
@@ -95,44 +90,79 @@ const Footer = () => {
         transition={{ duration: 1, delay: 0.3 }}
       />
 
-      {/* Floating particles effect */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(5)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-purple-400/20 rounded-full"
-            initial={{
-              x: Math.random() * 100 + "%",
-              y: "100%",
-              opacity: 0,
-            }}
-            animate={{
-              y: "-20px",
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: 4 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-              ease: "easeOut",
-            }}
-          />
-        ))}
+        <div className="absolute bottom-[-25px] left-1/2 transform -translate-x-1/2">
+          <div className="relative w-40 h-6">
+            <div className="absolute inset-0 rounded-full animate-glow-1" />
+            <div className="absolute inset-0 rounded-full animate-glow-2" />
+            <div className="absolute inset-0 rounded-full animate-glow-3" />
+          </div>
+        </div>
       </div>
 
+      <style jsx>{`
+        @keyframes glow-1 {
+          0%,
+          100% {
+            box-shadow: 0 0 40px 12px rgba(237, 148, 85, 0.4);
+            transform: scale(1);
+          }
+          50% {
+            box-shadow: 0 0 50px 16px rgba(237, 148, 85, 0.6);
+            transform: scale(1.1);
+          }
+        }
+        @keyframes glow-2 {
+          0%,
+          100% {
+            box-shadow: 0 0 35px 10px rgba(255, 251, 218, 0.3);
+            transform: scale(0.95);
+          }
+          50% {
+            box-shadow: 0 0 45px 14px rgba(255, 251, 218, 0.5);
+            transform: scale(1);
+          }
+        }
+        @keyframes glow-3 {
+          0%,
+          100% {
+            box-shadow: 0 0 30px 8px rgba(255, 187, 112, 0.25);
+            transform: scale(0.9);
+          }
+          50% {
+            box-shadow: 0 0 40px 12px rgba(255, 187, 112, 0.45);
+            transform: scale(1);
+          }
+        }
+
+        .animate-glow-1 {
+          animation: glow-1 5s ease-in-out infinite;
+        }
+        .animate-glow-2 {
+          animation: glow-2 6s ease-in-out infinite 1s;
+        }
+        .animate-glow-3 {
+          animation: glow-3 7s ease-in-out infinite 2s;
+        }
+      `}</style>
+
+      {/* Main Content */}
       <div className="relative container mx-auto px-6 py-8">
-        {/* Main content - matches your site's centered layout */}
         <motion.div
           className="flex flex-col items-center justify-center space-y-3"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
           variants={containerVariants}
         >
-          {/* Heart animation container - more subtle to match your design */}
           <motion.div
             className="flex items-center space-x-2 text-sm font-medium"
             variants={itemVariants}
           >
             <motion.span
-              className={`${bricolage_grotesque} text-gray-400`}
+              className={`${bricolage_grotesque} ${
+                isDarkMode ? "text-gray-400" : "text-gray-600"
+              }`}
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
@@ -150,7 +180,9 @@ const Footer = () => {
             </motion.span>
 
             <motion.span
-              className={`${bricolage_grotesque} text-gray-400`}
+              className={`${bricolage_grotesque} ${
+                isDarkMode ? "text-gray-400" : "text-gray-600"
+              }`}
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -159,7 +191,9 @@ const Footer = () => {
             </motion.span>
 
             <motion.span
-              className={`${bricolage_grotesque} cursor-none text-white font-semibold `}
+              className={`${bricolage_grotesque} cursor-none ${
+                isDarkMode ? "text-white" : "text-black"
+              } font-semibold`}
               variants={nameVariants}
               initial="initial"
               whileHover="hover"
@@ -169,9 +203,10 @@ const Footer = () => {
             </motion.span>
           </motion.div>
 
-          {/* Status indicators - matches your site's style */}
           <motion.div
-            className={`flex items-center space-x-4 text-xs text-gray-500 ${montserrat}`}
+            className={`flex items-center space-x-4 text-xs ${
+              isDarkMode ? "text-gray-500" : "text-gray-700"
+            } ${montserrat}`}
             variants={itemVariants}
           >
             <motion.div
@@ -195,7 +230,9 @@ const Footer = () => {
             </motion.div>
 
             <motion.div
-              className="w-px h-3 bg-gray-700"
+              className={`w-px h-3 ${
+                isDarkMode ? "bg-gray-700" : "bg-gray-400"
+              }`}
               initial={{ scaleY: 0 }}
               whileInView={{ scaleY: 1 }}
               transition={{ duration: 0.3, delay: 0.5 }}
@@ -224,7 +261,7 @@ const Footer = () => {
           </motion.div>
         </motion.div>
       </div>
-    </motion.footer>
+    </footer>
   );
 };
 

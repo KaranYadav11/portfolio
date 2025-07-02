@@ -11,12 +11,12 @@ export default function HeroSection() {
         </div>
         <div className="mt-4 px-32 max-sm:px-4">
           <h1
-            className={`!text-[3rem] mt-2 max-sm:!text-[1.6rem] !whitespace-nowrap font-bold tracking-tight text-center ${bricolage_grotesque}`}
+            className={`!text-[3rem] mt-2 max-sm:!text-[1.9rem] !whitespace-nowrap font-bold tracking-tight text-center ${bricolage_grotesque}`}
           >
             Hi, I&apos;m Karan Yadav
           </h1>
           <h1
-            className={`mt-2 max-sm:mt-5 max-sm:px-3 !text-base max-sm:!text-sm text-center !font-normal !tracking-normal  !leading-6 ${montserrat}`}
+            className={`mt-2  max-sm:mt-6 max-sm:px-3 !text-base max-sm:!text-[15px] text-center !font-normal !tracking-normal  !leading-6 ${montserrat}`}
           >
             Hooked on building clean UIs, cracking backend logic, and fighting
             bugs until they finally give up. Tech, basketball, netflix, and
@@ -24,7 +24,7 @@ export default function HeroSection() {
             out, but getting better every day.
           </h1>
         </div>
-        <div className="mt-8 flex gap-4">
+        <div className="mt-8 max-sm:mt-14 flex gap-4 ">
           <InteractiveHoverButton
             className={`${bricolage_grotesque} cursor-none`}
           >

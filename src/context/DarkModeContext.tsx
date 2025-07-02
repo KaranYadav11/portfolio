@@ -20,12 +20,17 @@ const DarkModeProvider: React.FC<DarkModeProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const storedPreference = localStorage.getItem("theme");
-    const prefersDarkMode = storedPreference === "dark";
+
+    // ✅ DEFAULT TO DARK MODE if nothing is saved
+    const prefersDarkMode = storedPreference
+      ? storedPreference === "dark"
+      : true;
 
     setIsDarkMode(prefersDarkMode);
 
     if (prefersDarkMode) {
       document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark"); // save it for next time
     } else {
       document.documentElement.classList.remove("dark");
     }
